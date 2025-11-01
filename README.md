@@ -1,5 +1,3 @@
-# elixir-lab
-
 This repo is a laboratory to study & explore the [Elixir programming language](https://elixir-lang.org/).
 
 Topics:
