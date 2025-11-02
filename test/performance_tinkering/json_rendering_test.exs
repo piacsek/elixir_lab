@@ -1,4 +1,6 @@
-for i <- 1..1 do
+repetitions = System.get_env("EXUNIT_REPETITIONS", "1")
+
+for i <- 1..String.to_integer(repetitions) do
   defmodule String.to_atom("ElixirLabWeb.JsonRenderingTest#{i}") do
     use ElixirLabWeb.ConnCase
 
@@ -10,6 +12,7 @@ for i <- 1..1 do
 end
 
 # Results breakdown
+# 1M tests: BEAM VM crash!
 # 20k tests: Finished in 444.6 seconds (444.6s async, 0.00s sync)
 # 20k tests: Finished in 486.1 seconds (486.1s async, 0.00s sync)
 

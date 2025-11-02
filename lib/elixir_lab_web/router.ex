@@ -18,6 +18,8 @@ defmodule ElixirLabWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/ex-unit", ExUnitLive
   end
 
   # Other scopes may use custom stacks.
