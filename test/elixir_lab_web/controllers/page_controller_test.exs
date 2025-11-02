@@ -2,7 +2,9 @@ defmodule ElixirLabWeb.PageControllerTest do
   use ElixirLabWeb.ConnCase
 
   test "GET /", %{conn: conn} do
-    conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind from prototype to production"
+    html_response = conn |> get(~p"/") |> html_response(200)
+
+    assert html_response =~ "https://picsum.photos/400/400?random="
+    assert html_response =~ "Random Vibes"
   end
 end
