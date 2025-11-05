@@ -1,5 +1,3 @@
-- Add CI
-- Add CD
 - Add ability to run a test locally from the UI
 - Save the test run results:
 	- Add DB tables to persist test run results(test_runner, test_execution)
