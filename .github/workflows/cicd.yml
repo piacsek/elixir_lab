@@ -124,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Push to Gigalixir
-        run: git push https://${{ secrets.GIGALIXIR_USERNAME }}:${{ secrets.GIGALIXIR_PASSWORD }}@git.gigalixir.com/elixir-lab.git/ HEAD:refs/heads/main
+        run: git push https://hardcoded:${{ secrets.GIGALIXIR_PASSWORD }}@git.gigalixir.com/elixir-lab.git/ HEAD:refs/heads/main
 
 
 
