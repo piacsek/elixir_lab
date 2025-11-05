@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: 'bitnamilegacy/postgresql:14.9.0'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=elixir_lab_dev
+      - POSTGRESQL_TIMEZONE=UTC
+      - POSTGRESQL_LOG_TIMEZONE=UTC
+    volumes:
+      - 'docker_postgres:/bitnami/postgresql14'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d elixir_lab_dev']
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    profiles: [dependent-services]
+
+volumes:
+  docker_postgres:
