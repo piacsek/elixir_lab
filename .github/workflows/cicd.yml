@@ -4,10 +4,12 @@ on: [push]
 
 env:
   MIX_ENV: test
+  JOB_RUNNER: ubuntu-latest
 
 jobs:
   compilation:
-    runs-on: ubuntu-latest
+    name: Deps & App compilation
+    runs-on: ${{ env.JOB_RUNNER }}
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
@@ -53,4 +55,28 @@ jobs:
         with:
           path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code-${{ github.sha }}
+  test:
+    name: Test suite
+    runs-on: ${{ env.JOB_RUNNER }}
+    needs: 
+      - compilation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: setup-beam
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - name: Restore cached application
+        id: cached-application
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            deps/
+            _build/
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
+
+      - name: Mix test
+        id: mix-test
+        run: MIX_ENV=${{ env.MIX_ENV }} mix test
 
