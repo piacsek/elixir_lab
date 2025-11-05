@@ -76,8 +76,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            deps/
-            _build/
+            deps
+            _build
           key: hardcoded
           # key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
 
