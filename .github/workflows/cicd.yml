@@ -6,7 +6,7 @@ env:
   MIX_ENV: test
 
 jobs:
-  deps:
+  compilation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,3 +38,20 @@ jobs:
             deps
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}
+      - name: Restore cached application
+        id: cached-application
+        uses: actions/cache/restore@v4
+        with:
+          path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}-application-code
+      - name: Compile application
+        id: compile-application
+        run: MIX_ENV=${{ env.MIX_ENV }} mix compile
+      - name: Save compiled application to cache
+        id: cache-compiled-application
+        if: steps.cached-deps.output.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}-application-code
+
