@@ -79,7 +79,7 @@ jobs:
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
       - name: Run docker-compose services
-        uses: hoverkraft-tech/compose-action@v2.0.1
+        uses: hoverkraft-tech/compose-action@v2.4.1
         with:
           compose-file: "./docker-compose.yaml"
           services: |
