@@ -22,7 +22,7 @@ jobs:
           path: |
             deps
             _build
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}
       - name: Get & compile deps
         id: get-and-compile-deps
         if: steps.cached-deps.output.cache-hit != 'true'
@@ -37,13 +37,13 @@ jobs:
           path: |
             deps
             _build
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}
       - name: Restore cached application
         id: cached-application
         uses: actions/cache/restore@v4
         with:
           path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}-application-code
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
       - name: Compile application
         id: compile-application
         run: MIX_ENV=${{ env.MIX_ENV }} mix compile
@@ -53,5 +53,5 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}-application-code
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
 
