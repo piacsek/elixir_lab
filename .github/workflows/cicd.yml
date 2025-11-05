@@ -1,0 +1,7 @@
+name: Build & Deploy pipeline
+on: [push]
+jobs:
+  deps:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hi, I'm gonna fetch deps"
