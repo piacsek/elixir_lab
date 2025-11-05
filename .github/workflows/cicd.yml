@@ -77,7 +77,7 @@ jobs:
           path: |
             deps/
             _build/
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-
 
       - name: Mix test
         id: mix-test
