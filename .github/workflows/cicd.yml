@@ -1,5 +1,10 @@
 name: Build & Deploy pipeline
+
 on: [push]
+
+env:
+  MIX_ENV: test
+
 jobs:
   deps:
     runs-on: ubuntu-latest
@@ -10,4 +15,26 @@ jobs:
         with:
           version-file: .tool-versions
           version-type: strict
-      - run: echo "Hi, I'm gonna fetch deps"
+      - name: Restore cached deps
+        id: cached-deps
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            deps
+            _build
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}
+      - name: Get & compile deps
+        id: get-and-compile-deps
+        if: steps.cached-deps.output.cache-hit != "true"
+        run: |
+          MIX_ENV=${{ env.MIX_ENV }} mix deps.get
+          MIX_ENV=${{ env.MIX_ENV }} mix deps.compile
+      - name: Save deps to cache
+        id: save-deps-cache
+        if: steps.cached-deps.output.cache-hit != "true"
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            deps
+            _build
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('apps/nova/mix.lock') }}
