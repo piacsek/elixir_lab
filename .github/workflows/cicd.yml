@@ -9,6 +9,7 @@ jobs:
   run_checks_and_deploly:
     name: Run quality checks & Deploy
     runs-on: ubuntu-latest
+    environment: elixir-lab
     steps:
       - uses: actions/checkout@v4
         with:
