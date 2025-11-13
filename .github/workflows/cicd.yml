@@ -34,11 +34,9 @@ jobs:
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}
       - name: Get & compile deps
-        id: get-and-compile-deps
         if: steps.cached-deps.outputs.cache-hit != 'true'
         run: mix deps.get && mix deps.compile
       - name: Save deps to cache
-        id: save-deps-cache
         if: steps.cached-deps.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
@@ -47,7 +45,6 @@ jobs:
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}
       - name: Restore cached application
-        id: cached-application
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -55,10 +52,8 @@ jobs:
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-
       - name: Compile application
-        id: compile-application
         run: mix compile --warnings-as-errors
       - name: Save compiled application to cache
-        id: cache-compiled-application
         uses: actions/cache/save@v4
         with:
           path: |
@@ -66,10 +61,8 @@ jobs:
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
       - name: Check formatted
-        id: check-formatted
         run: mix format --check-formatted
       - name: Mix credo
-        id: mix-credo
         run: mix credo
       - name: Run docker-compose services
         uses: hoverkraft-tech/compose-action@v2.4.1
@@ -79,7 +72,6 @@ jobs:
             postgres
           up-flags: '--wait'
       - name: Mix test
-        id: mix-test
         run: mix test
       - name: Push to Gigalixir
         run: |
