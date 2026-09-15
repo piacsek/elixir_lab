@@ -1,17 +1,15 @@
 services:
   postgres:
-    image: 'bitnamilegacy/postgresql:14.9.0'
+    image: 'postgres:18.6'
     command: postgres -c jit=off -c fsync=off -c synchronous_commit=off -c full_page_writes=off
     ports:
       - 5432:5432
     environment:
-      - POSTGRESQL_USERNAME=postgres
-      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRESQL_DATABASE=elixir_lab_dev
-      - POSTGRESQL_TIMEZONE=UTC
-      - POSTGRESQL_LOG_TIMEZONE=UTC
     volumes:
-      - 'docker_postgres:/var/lib/postgresql/data'
+      - 'docker_postgres:/var/lib/postgresql'
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres -d elixir_lab_dev']
       interval: 10s
